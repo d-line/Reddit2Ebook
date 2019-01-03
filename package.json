@@ -1,6 +1,6 @@
 {
   "name": "reddit2ebook",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Turns any subreddit (selftext) to ebook.",
   "main": "index.js",
   "dependencies": {
@@ -8,12 +8,30 @@
     "dotenv": "^6.0.0",
     "jimp": "^0.5.3",
     "nodepub": "^2.0.7",
+    "ora": "^3.0.0",
     "unescape": "^1.0.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "archiver": "^3.0.0"
+  },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "build-linux": "pkg package.json --targets=linux-x64 --output reddit2ebook-linux",
+    "build-windows": "pkg package.json --targets=win-x64 --output reddit2ebook-win.exe",
+    "build-macos": "pkg package.json --targets=mac-x64 --output reddit2ebook-macos",
+    "build-release": "pkg package.json --targets=linux-x64,win-x64,mac-x64 && npm run generate-release-zip",
+    "generate-release-zip": "node generate-release.js"
   },
   "author": "Racle",
-  "license": "ISC"
+  "license": "ISC",
+  "pkg": {
+    "scripts": "index.js",
+    "assets": [
+      "./node_modules/@jimp/plugin-print/**/*",
+      "./cover/**"
+    ]
+  },
+  "bin": {
+    "myapp": "./index.js"
+  }
 }
